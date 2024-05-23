@@ -3,6 +3,7 @@
   "displayName": "TidyFold",
   "description": "Enhance your code readability and organization with TidyFold, a Visual Studio Code extension that folds functions and HTML elements based on preceding comments. TidyFold helps you maintain a clean and aesthetic code structure by automatically collapsing code sections with just one command, allowing you to focus on what matters most",
   "icon": "images/icon.png",
+  "publisher": "aljonlerios",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.89.0"
