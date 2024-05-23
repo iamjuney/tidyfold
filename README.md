@@ -1,71 +1,46 @@
-# tidyfold README
+# TidyFold Extension for VS Code
 
-This is the README for your extension "tidyfold". After writing up a brief description, we recommend including the following sections.
+## Overview
+
+TidyFold is a Visual Studio Code extension designed to help you quickly minimize expanded regions in your code files. It targets specific foldable lines, such as functions, classes, and HTML elements, making it easier to navigate and manage large codebases.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Automatically fold specified regions in your code.
+- Targets JavaScript, TypeScript, and HTML foldable sections.
+- Scrolls to the top of the document after folding.
 
-For example if there is an image subfolder under your extension project workspace:
+## Installation
 
-\!\[feature X\]\(images/feature-x.png\)
+1. **Install from the VS Code Marketplace**:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+   - Open Visual Studio Code.
+   - Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of the window.
+   - Search for "TidyFold" and click "Install".
 
-## Requirements
+2. **Install from a VSIX file**:
+   - Download the `.vsix` file for TidyFold.
+   - In Visual Studio Code, open the Extensions view.
+   - Click on the three dots at the top-right corner and select "Install from VSIX...".
+   - Choose the downloaded `.vsix` file to install the extension.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Usage
 
-## Extension Settings
+1. Open any code file in Visual Studio Code.
+2. Run the TidyFold command:
+   - Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS).
+   - Type and select `TidyFold: Minimize Expanded Regions`.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+The extension will automatically fold the targeted regions and scroll to the top of the document.
 
-For example:
+## Contributing
 
-This extension contributes the following settings:
+Contributions are welcome! If you find a bug or have a feature request, please open an issue on the [GitHub repository](https://github.com/your-repo/tidyfold).
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## License
 
-## Known Issues
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## Acknowledgments
 
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+This extension leverages the VS Code API to provide folding functionality. Special thanks to the VS Code team for their extensive documentation and support.
