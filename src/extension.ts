@@ -6,54 +6,34 @@ import * as vscode from "vscode";
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
-    "extension.minimizeExpandFunctions",
-    () => {
+    "tidyfold.minimizeExpandedRegions",
+    async () => {
       const editor = vscode.window.activeTextEditor;
 
       if (editor) {
         const document = editor.document;
         const text = document.getText();
         const lines = text.split("\n");
-        const rangesToFold: vscode.Range[] = [];
+        const linesToFold: number[] = getFoldableLines(lines);
 
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i].trim();
+        for (const line of linesToFold) {
+          editor.selections = [new vscode.Selection(line, 0, line, 0)];
 
-          // Example rule: Check for comments above function definitions
-          if (
-            line.startsWith("//") &&
-            i + 1 < lines.length &&
-            lines[i + 1].trim().startsWith("function")
-          ) {
-            const start = new vscode.Position(i + 1, 0);
-            const end = findClosingBracket(lines, i + 2);
-            rangesToFold.push(new vscode.Range(start, end));
-          }
+          // fold the current selection
+          await vscode.commands.executeCommand("editor.fold");
 
-          // Example rule: Check for function definitions
-          if (line.startsWith("function")) {
-            const start = new vscode.Position(i, 0);
-            const end = findClosingBracket(lines, i + 1);
-            rangesToFold.push(new vscode.Range(start, end));
-          }
-
-          // Example rule: Check for html comments
-          if (line.startsWith("<!--")) {
-            const start = new vscode.Position(i, 0);
-            const end = new vscode.Position(i + 1, 0);
-            rangesToFold.push(new vscode.Range(start, end));
-          }
+          // // highlight the current selection (add decoration)
+          //   editor.setDecorations(
+          //     vscode.window.createTextEditorDecorationType({
+          //       backgroundColor: "rgba(255, 255, 0, 0.3)",
+          //       isWholeLine: true,
+          //     }),
+          //     [new vscode.Range(line, 0, line, lines[line].length)]
+          //   );
         }
 
-        editor.setDecorations(
-          vscode.window.createTextEditorDecorationType({
-            isWholeLine: true,
-            backgroundColor: "rgba(0, 255, 0, 0.3)", // Example decoration
-          }),
-          rangesToFold
-        );
-
-        vscode.commands.executeCommand("editor.fold", rangesToFold);
+        // scroll to the top of the document
+        await vscode.commands.executeCommand("cursorTop");
       }
     }
   );
@@ -61,16 +41,46 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposable);
 }
 
-export function findClosingBracket(
-  lines: string[],
-  startIndex: number
-): vscode.Position {
-  for (let j = startIndex; j < lines.length; j++) {
-    if (lines[j].trim().startsWith("}")) {
-      return new vscode.Position(j, lines[j].length);
+// Returns the line numbers of the foldable lines
+function getFoldableLines(lines: string[]): number[] {
+  const foldableLines: number[] = [];
+  const jsFoldables = [
+    "function",
+    "class",
+    "const",
+    "$effect",
+    "type",
+    "export",
+    "for",
+    "if",
+  ];
+  const htmlFoldables = ["<div", "<form", "{#snippet"];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    for (const foldable of jsFoldables) {
+      if (
+        line.startsWith("//") &&
+        i + 1 < lines.length &&
+        lines[i + 1].trim().startsWith(foldable)
+      ) {
+        foldableLines.push(i + 1);
+      }
+    }
+
+    for (const foldable of htmlFoldables) {
+      if (
+        line.startsWith("<!--") &&
+        i + 1 < lines.length &&
+        lines[i + 1].trim().startsWith(foldable)
+      ) {
+        foldableLines.push(i + 1);
+      }
     }
   }
-  return new vscode.Position(startIndex, 0);
+
+  return foldableLines;
 }
 
 // This method is called when your extension is deactivated

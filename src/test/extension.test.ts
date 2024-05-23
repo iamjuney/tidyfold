@@ -20,17 +20,4 @@ suite("Extension Test Suite", () => {
     const disposableExists = context.subscriptions.some((sub) => sub.dispose);
     assert.strictEqual(disposableExists, true);
   });
-
-  test("Test findClosingBracket function", () => {
-    const lines = ["function test() {", "  // Some code here", "}"];
-
-    const startIndex = 0;
-    const closingBracketPosition = TidyFold.findClosingBracket(
-      lines,
-      startIndex
-    );
-    const expectedPosition = new vscode.Position(2, lines[2].length);
-
-    assert.deepStrictEqual(closingBracketPosition, expectedPosition);
-  });
 });

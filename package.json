@@ -1,8 +1,8 @@
 {
   "name": "tidyfold",
   "displayName": "TidyFold",
-  "description": "Enhance your code readability and organization with TidyFold, a Visual Studio Code extension that intelligently folds functions and HTML elements based on preceding comments. TidyFold helps you maintain a clean and aesthetic code structure by automatically collapsing code sections with just one command, allowing you to focus on what matters most. Perfect for developers looking to streamline their coding environment and improve productivity.",
-  "version": "0.0.1",
+  "description": "Enhance your code readability and organization with TidyFold, a Visual Studio Code extension that folds functions and HTML elements based on preceding comments. TidyFold helps you maintain a clean and aesthetic code structure by automatically collapsing code sections with just one command, allowing you to focus on what matters most",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.89.0"
   },
@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "tidyfold.helloWorld",
-        "title": "Hello World"
+        "command": "tidyfold.minimizeExpandedRegions",
+        "title": "TidyFold: Minimize Expanded Regions"
       }
     ]
   },
