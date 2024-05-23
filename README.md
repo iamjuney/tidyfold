@@ -10,6 +10,10 @@ TidyFold is a Visual Studio Code extension designed to help you quickly minimize
 - Targets JavaScript, TypeScript, and HTML foldable sections.
 - Scrolls to the top of the document after folding.
 
+## Screenshot
+
+![TidyFold in action](images/screenshot.png)
+
 ## Installation
 
 1. **Install from the VS Code Marketplace**:
