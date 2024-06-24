@@ -30,12 +30,21 @@ function getFoldableLines(lines: string[]): number[] {
     "class",
     "const",
     "$effect",
+    "import",
+    "onMount",
     "type",
     "export",
     "for",
     "if",
   ];
-  const htmlFoldables = ["<div", "<form", "{#snippet"];
+  const htmlFoldables = [
+    "<div",
+    "<form",
+    "{#snippet",
+    "<navbar",
+    "<footer",
+    "<section",
+  ];
 
   lines.forEach((line, i) => {
     const trimmedLine = line.trim();
