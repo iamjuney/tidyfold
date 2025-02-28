@@ -6,7 +6,19 @@ suite("SvelteFoldingRangeProvider Test Suite", () => {
   let provider: SvelteFoldingRangeProvider;
 
   setup(() => {
-    provider = new SvelteFoldingRangeProvider();
+    // Create a mock output channel for testing
+    const mockOutputChannel = {
+      name: "Test Channel",
+      append: () => {},
+      appendLine: () => {},
+      clear: () => {},
+      show: () => {},
+      hide: () => {},
+      replace: () => {},
+      dispose: () => {},
+    } as vscode.OutputChannel;
+
+    provider = new SvelteFoldingRangeProvider(mockOutputChannel);
   });
 
   test("Provides folding ranges for JS function blocks", () => {
@@ -119,6 +131,40 @@ function test() {
 
     // Should find two ranges: one for function and one for section
     assert.strictEqual(ranges.length, 2);
+  });
+
+  // ADDED: New test to ensure excluded elements don't get folded
+  test("Doesn't fold excluded elements like div and script", () => {
+    const document = createMockDocument(`
+<div>
+  <p>Some content</p>
+</div>
+
+<script>
+  function test() {
+    console.log("Hello");
+  }
+</script>
+
+<section>
+  Content
+</section>
+    `);
+
+    const ranges = provider.provideFoldingRanges(
+      document,
+      {} as vscode.FoldingContext,
+      {} as vscode.CancellationToken
+    );
+
+    // Should find only one range for section, not for div or script
+    assert.strictEqual(ranges.length, 1);
+    // Verify it's the section that was folded, not div or script
+    const sectionStartLine = document
+      .getText()
+      .split("\n")
+      .findIndex((line) => line.trim() === "<section>");
+    assert.strictEqual(ranges[0].start, sectionStartLine);
   });
 
   // Helper function to create a mock TextDocument

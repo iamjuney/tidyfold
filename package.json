@@ -1,55 +1,134 @@
 {
   "name": "tidyfold",
   "displayName": "TidyFold",
-  "description": "Enhance your code readability and organization with TidyFold, a Visual Studio Code extension that folds functions and HTML elements based on preceding comments. TidyFold helps you maintain a clean and aesthetic code structure by automatically collapsing code sections with just one command, allowing you to focus on what matters most",
+  "description": "Smart folding for Svelte and web development files",
   "icon": "images/icon.png",
   "publisher": "iamjuney",
   "repository": {
     "type": "github",
     "url": "https://github.com/iamjuney/tidyfold"
   },
-  "version": "0.0.4",
+  "version": "0.1.0",
   "engines": {
-    "vscode": "^1.89.0"
+    "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "tidyfold.minimizeExpandedRegions",
         "title": "TidyFold: Minimize Expanded Regions"
+      },
+      {
+        "command": "tidyfold.unfoldRegions",
+        "title": "TidyFold: Unfold Regions"
+      },
+      {
+        "command": "tidyfold.debugFolding",
+        "title": "TidyFold: Debug Folding Regions"
+      },
+      {
+        "command": "tidyfold.showLogs",
+        "title": "TidyFold: Show Debug Logs"
+      },
+      {
+        "command": "tidyfold.toggleHighlightBlocks",
+        "title": "TidyFold: Toggle Highlight Foldable Blocks"
+      },
+      {
+        "command": "tidyfold.refreshHighlights",
+        "title": "TidyFold: Refresh Foldable Block Highlights"
       }
-    ]
+    ],
+    "keybindings": [
+      {
+        "command": "tidyfold.minimizeExpandedRegions",
+        "key": "ctrl+alt+]",
+        "mac": "cmd+alt+]"
+      },
+      {
+        "command": "tidyfold.unfoldEverything",
+        "key": "ctrl+alt+[",
+        "mac": "cmd+alt+["
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "tidyfold.minimizeExpandedRegions",
+          "group": "navigation"
+        },
+        {
+          "command": "tidyfold.unfoldEverything",
+          "group": "navigation"
+        },
+        {
+          "command": "tidyfold.toggleHighlightBlocks",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "TidyFold",
+      "properties": {
+        "tidyfold.enableCustomFolding": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable custom folding behavior for Svelte files"
+        },
+        "tidyfold.excludedFoldingElements": {
+          "type": "array",
+          "default": [],
+          "description": "List of HTML elements that should not be folded (without angle brackets)"
+        },
+        "tidyfold.foldParentBlocks": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable folding of parent blocks like div and script tags"
+        },
+        "tidyfold.showDebugLogs": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show debug logs in output channel when folding operations occur"
+        },
+        "tidyfold.highlightFoldableBlocks": {
+          "type": "boolean",
+          "default": false,
+          "description": "Highlight foldable blocks with a light border to make them visible"
+        }
+      }
+    }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run package",
-    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "check-types": "tsc --noEmit",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "watch:tsc": "tsc -watch -p ./",
+    "watch:esbuild": "node ./esbuild.js --watch"
   },
   "devDependencies": {
-    "@types/vscode": "^1.89.0",
+    "@types/vscode": "^1.85.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
-    "@typescript-eslint/eslint-plugin": "^7.7.1",
-    "@typescript-eslint/parser": "^7.7.1",
-    "eslint": "^8.57.0",
-    "esbuild": "^0.20.2",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.4.5",
-    "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.3.9"
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8"
   }
 }
